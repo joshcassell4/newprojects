@@ -3,6 +3,8 @@ import uuid
 import os
 import json
 from json import JSONEncoder
+import requests
+from bs4 import BeautifulSoup as bs
 
 class Thing():
     def __init__(self,description=None,name=None,status="New",typeName="Thing",*args,**kwargs):
@@ -15,16 +17,17 @@ class Thing():
             self.name = name
         self.description = description
         self.typeName = typeName
-        self.status = status
+        self.status = [status]
         self.file = None
         self.filename = os.getenv('HOME') + "/projects/Things/" + self.name + "_" + self.typeName + "_" + self.nid
- 
+        self.things = []
+        
     
     def __repr__(self):
-        return "Thing(" + self.name + ":" + self.typeName + ":" + self.nid + ")"
+        return "Thing(" + self.typeName + ":" + self.name + ":" + self.nid + ")"
 
     def __str__(self):
-        return "Thing(" + self.name + ":" + self.typename + ")"
+        return "Thing(" + self.typeName + ":" + self.name + ")"
 
     def ensurePath(self):
         if not os.path.exists(self.path):
@@ -34,9 +37,10 @@ class Thing():
         self.open_file()
         self.file.write(json.dumps(self,cls=ThingEncoder))
         self.close_file()
+        return self
 
     def get_stats(self):
-        return self.description + " " + self.status
+        return self.description + " " + (" ".join(self.status))
 
     def get_filename(self):
         return self.filename
@@ -76,9 +80,20 @@ class Thing():
 
     def use(self,newStatus="Used"):
         print("Used " + self.name + ".")
-        self.status = newStatus
+        self.status.append(newStatus)
         return self
+
+    def use(self, adverb, exclaim=False):
+        print("Used " + adverb + ("." if not exclaim else "!"))
+        self.status.append("Used " + adverb + ("." if not exclaim else "!"))
+
+    def refresh(self):
+        print(self.typeName + " " + self.realname + " is refreshed.")
+        self.status = ['Renewed']
         
+    def realname(self):
+        return (self.typeName + ":" + self.name + ":" + self.nid)
+
     def getStatus(self):
         return self.status
 
