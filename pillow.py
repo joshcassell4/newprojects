@@ -199,8 +199,8 @@ draw = ImageDraw.Draw(image)
 font = ImageFont.truetype(r"/usr/share/fonts/truetype/open-sans/OpenSans-Regular.ttf", 15)
  
 text = u"""\
-Geeks
-FOR \n Geeks"""
+Stop
+for \n tea!"""
  
 # drawing text size
 draw.text((6, 8), text, fill ="red", font = font, align ="right")
@@ -237,7 +237,7 @@ import math
 from PIL import Image, ImageDraw
 from PIL import ImagePath
  
-side = 12
+side = 9
 xy = list([
     ((math.cos(th) + 1) * 90,
      (math.sin(th) + 1) * 60)
@@ -252,6 +252,7 @@ img1 = ImageDraw.Draw(img)
 img1.polygon(xy, fill="#eeeeff", outline="blue")
 img.show()
 # %%
+
 print(list(xy))
 # %%
 # This will import Image and ImageEnhance modules
